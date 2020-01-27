@@ -56,8 +56,7 @@ class Board:
             self.current_player = Color.BLACK
 
     def check_for_win(self):
-        for row in range(self.size):
-
+        for row in range(self.size+1):
             horizontal_seq = []
             vertical_seq = []
             left_ascending_seq = []
@@ -65,7 +64,7 @@ class Board:
             right_ascending_seq = []
             right_descending_seq = []
 
-            for col in range(self.size):
+            for col in range(self.size+1):
                 horizontal_seq.append(self.board[row][col])
                 vertical_seq.append(self.board[col][row])
                 if row >= col:
@@ -83,6 +82,7 @@ class Board:
                     self.end = True
                     # print(self.current_player)
                     self.winner = self.current_player
+
 
 
 """
@@ -104,13 +104,16 @@ class Game:
 
     def draw(self):
         pygame.init()
-        screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+        screen = pygame.display.set_mode(
+            (self.screen_width, self.screen_height))
         screen.fill(COLOR_WHITE)
         width = min(self.screen_height, self.screen_width)
         pygame.display.set_caption("GOMOKU")
         for x in range(self.screen_edge_length, width, self.tile_length):
-            pygame.draw.line(screen, COLOR_BLACK, (x, self.screen_edge_length), (x, width - self.screen_edge_length))
-            pygame.draw.line(screen, COLOR_BLACK, (self.screen_edge_length, x), (width - self.screen_edge_length, x))
+            pygame.draw.line(screen, COLOR_BLACK, (x, self.screen_edge_length),
+                             (x, width - self.screen_edge_length))
+            pygame.draw.line(screen, COLOR_BLACK, (self.screen_edge_length,
+                                                   x), (width - self.screen_edge_length, x))
         pygame.display.update()
         self.screen = screen
 
@@ -133,7 +136,8 @@ class Game:
 
     def legal_pos(self, pos):
         # x in bound
-        constrains = [pos[0], self.screen_width - pos[0], pos[1], self.screen_height - pos[1]]
+        constrains = [pos[0], self.screen_width -
+                      pos[0], pos[1], self.screen_height - pos[1]]
         if min(constrains) > 0.5 * self.screen_edge_length:
             return True
         return False
@@ -150,9 +154,11 @@ class Game:
 
     def draw_stone(self, pos, player):
         if player == Color.BLACK:
-            pygame.draw.circle(self.screen, COLOR_BLACK, pos, self.tile_length // 2 - 2)
+            pygame.draw.circle(self.screen, COLOR_BLACK,
+                               pos, self.tile_length // 2 - 2)
         elif player == Color.WHITE:
-            pygame.draw.circle(self.screen, COLOR_BLACK, pos, self.tile_length // 2 - 2, 2)
+            pygame.draw.circle(self.screen, COLOR_BLACK, pos,
+                               self.tile_length // 2 - 2, 2)
         pygame.display.update()
 
     def show_result(self):
