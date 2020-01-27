@@ -2,6 +2,8 @@
 ### Example user template
 
 # IntelliJ project files
-.idea
+.idea/
 out
 gen
+__pychache__
+
