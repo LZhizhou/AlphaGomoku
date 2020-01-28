@@ -1,21 +1,20 @@
 import pygame
-from Board import Board, Color
+from board import Board, Color
 """
 drawing the ui and handle the game process using pygame
 """
 COLOR_BLACK = (0, 0, 0)
 COLOR_WHITE = (255, 255, 255)
 class Game:
-    def __init__(self, width, height, edge_length, board_size):
+    def __init__(self, width=800, height=800, edge_length=50, board_size = 7,wait_click = True):
         self.screen_width = width
         self.screen_height = height
         self.screen_edge_length = edge_length
-        self.tile_length = (min(width, height) - 2 * edge_length) // board_size
-        self.board = Board(board_size)
+        self.tile_length = (min(width, height) - 2 * edge_length) // (board_size-1)
+        self.board = None
+        if wait_click:
+            self.board = Board(board_size)
         self.screen = None
-        self.draw()
-        while True:
-            self.wait_event()
 
     def draw(self):
         pygame.init()
@@ -32,18 +31,20 @@ class Game:
         pygame.display.update()
         self.screen = screen
 
-    def wait_event(self):
+    def wait_event(self,enable_mouse_click=True):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.display.quit()
+                pygame.quit()
                 exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if enable_mouse_click and event.type == pygame.MOUSEBUTTONDOWN:
                 if not self.board.end:
                     if self.legal_pos(event.pos):
                         coord = self.pos_to_coord(event.pos)
                         player = self.board.play_stone(coord)
                         self.draw_stone(self.coord_to_pos(coord), player)
                         if self.board.end:
-                            self.show_result()
+                            self.show_result(self.board.winner)
 
                 else:
                     self.board.reset()
@@ -76,10 +77,10 @@ class Game:
                                self.tile_length // 2 - 2, 2)
         pygame.display.update()
 
-    def show_result(self):
+    def show_result(self, winner):
         self.screen.fill(COLOR_WHITE)
         font = pygame.font.Font('freesansbold.ttf', 32)
-        text = font.render(self.board.winner.name + " wins", True, COLOR_BLACK)
+        text = font.render(winner.name + " wins", True, COLOR_BLACK)
         text_rect = text.get_rect()
         text_rect.center = (self.screen_width // 2, self.screen_height // 2)
         self.screen.blit(text, text_rect)
@@ -87,4 +88,7 @@ class Game:
 
 
 if __name__ == '__main__':
-    Game(width=800, height=800, edge_length=50, board_size=10)
+    game = Game()
+    game.draw()
+    while True:
+        game.wait_event()

@@ -4,8 +4,9 @@ import numpy as np
 
 class Color(Enum):
     EMPTY = 0
-    WHITE = 1   
-    BLACK = 2
+    BLACK = 1
+    WHITE = 2   
+    
 def check_list_len_5_and_equal(lst):
     if len(lst) > 5:
         lst.pop(0)
@@ -20,13 +21,13 @@ class Board:
     def __init__(self, size):
         self.size = size
         self.current_player = Color.BLACK
-        self.board = np.zeros((self.size + 1, self.size + 1), dtype=np.uint8)
+        self.board = np.zeros((self.size, self.size ), dtype=np.uint8)
         self.winner = None
         self.end = False
 
     def reset(self):
         self.current_player = Color.BLACK
-        self.board = np.zeros((self.size + 1, self.size + 1), dtype=np.uint8)
+        self.board = np.zeros((self.size , self.size ), dtype=np.uint8)
         self.winner = None
         self.end = False
 
@@ -47,7 +48,7 @@ class Board:
             self.current_player = Color.BLACK
 
     def __check_for_win(self):
-        for row in range(self.size+1):
+        for row in range(self.size):
             horizontal_seq = []
             vertical_seq = []
             ascending_seq = []
@@ -55,13 +56,13 @@ class Board:
             symmetric_ascending_seq = []
             symmetric_descending_seq = []
 
-            for col in range(self.size+1):
+            for col in range(self.size):
                 horizontal_seq.append(self.board[row][col])
                 vertical_seq.append(self.board[col][row])
                 if row >= col:
                     ascending_seq.append(self.board[row - col][col])
                     symmetric_ascending_seq.append(self.board[col][row - col])
-                if row + col <= self.size:
+                if row + col < self.size:
                     descending_seq.append(self.board[row + col][col])
                     symmetric_descending_seq.append(self.board[col][row + col])
 
