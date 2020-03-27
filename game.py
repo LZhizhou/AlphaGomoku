@@ -1,5 +1,7 @@
 import pygame
+
 from board import Board, Color
+
 """
 drawing the ui and handle the game process using pygame
 """

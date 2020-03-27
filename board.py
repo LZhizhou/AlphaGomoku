@@ -2,6 +2,7 @@ from enum import Enum
 
 import numpy as np
 
+
 class Color(Enum):
     EMPTY = 0
     BLACK = 1
