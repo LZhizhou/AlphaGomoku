@@ -36,9 +36,10 @@ class Game:
     def wait_event(self,enable_mouse_click=True):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.display.quit()
-                pygame.quit()
-                exit()
+                return False
+                # pygame.display.quit()
+                # pygame.quit()
+                # exit()
             if enable_mouse_click and event.type == pygame.MOUSEBUTTONDOWN:
                 if not self.board.end:
                     if self.legal_pos(event.pos):
@@ -51,6 +52,7 @@ class Game:
                 else:
                     self.board.reset()
                     self.draw()
+            return True
 
     def legal_pos(self, pos):
         # x in bound
