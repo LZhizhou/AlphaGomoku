@@ -70,7 +70,7 @@ if __name__ == '__main__':
         game.draw()
         game_continue = True
         while game_continue:
-            game_continue = game.wait_event(False)
+            game_continue = game.wait_event()
         # game_thread = GameThread()
         # game_thread.run()
         # threads.append(game_thread)

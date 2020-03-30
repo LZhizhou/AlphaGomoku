@@ -38,17 +38,21 @@ class Board:
         if self.board[coord[1]][coord[0]] != color.EMPTY.value:
             return None
         self.board[coord[1]][coord[0]] = color.value
-        self.__check_for_win()
-        self.__switch_player()
+        self._check_for_win()
+        self._switch_player()
         return color
 
-    def __switch_player(self):
+    def _switch_player(self):
         if self.current_player == Color.BLACK:
             self.current_player = Color.WHITE
         else:
             self.current_player = Color.BLACK
 
-    def __check_for_win(self):
+    def _check_for_win(self):
+        
+        if np.count_nonzero(self.board) == self.size*self.size:
+            self.end = True
+            self.winner = None
         for row in range(self.size):
             horizontal_seq = []
             vertical_seq = []

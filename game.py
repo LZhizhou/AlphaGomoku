@@ -14,7 +14,8 @@ class Game:
         self.screen_edge_length = edge_length
         self.tile_length = (min(width, height) - 2 * edge_length) // (board_size-1)
         self.board = None
-        if wait_click:
+        self.wait_click = wait_click
+        if self.wait_click:
             self.board = Board(board_size)
         self.screen = None
 
@@ -33,14 +34,12 @@ class Game:
         pygame.display.update()
         self.screen = screen
 
-    def wait_event(self,enable_mouse_click=True):
+    def wait_event(self,toggle_wait=False):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
-                # pygame.display.quit()
-                # pygame.quit()
-                # exit()
-            if enable_mouse_click and event.type == pygame.MOUSEBUTTONDOWN:
+
+            if self.wait_click and event.type == pygame.MOUSEBUTTONDOWN:
                 if not self.board.end:
                     if self.legal_pos(event.pos):
                         coord = self.pos_to_coord(event.pos)
@@ -48,7 +47,8 @@ class Game:
                         self.draw_stone(self.coord_to_pos(coord), player)
                         if self.board.end:
                             self.show_result(self.board.winner)
-
+                        elif toggle_wait:
+                            self.wait_click = False
                 else:
                     self.board.reset()
                     self.draw()
@@ -84,7 +84,10 @@ class Game:
     def show_result(self, winner):
         self.screen.fill(COLOR_WHITE)
         font = pygame.font.Font('freesansbold.ttf', 32)
-        text = font.render(winner.name + " wins", True, COLOR_BLACK)
+        if winner == None:
+            text = font.render("draw", True, COLOR_BLACK)
+        else:
+            text = font.render(winner.name + " wins", True, COLOR_BLACK)
         text_rect = text.get_rect()
         text_rect.center = (self.screen_width // 2, self.screen_height // 2)
         self.screen.blit(text, text_rect)
@@ -92,7 +95,7 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game()
+    game = Game(wait_click=True)
     game.draw()
     while True:
         game.wait_event()
