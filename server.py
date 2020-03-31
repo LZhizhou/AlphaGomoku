@@ -67,7 +67,6 @@ if __name__ == '__main__':
             client = ClientThread(conn, i)
             threads.append(client)
             client.start()
-        game.draw()
         game_continue = True
         while game_continue:
             game_continue = game.wait_event()
