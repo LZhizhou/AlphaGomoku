@@ -39,7 +39,7 @@ class Game:
 
     def draw_choose_color(self):
         self.screen.fill(COLOR_WHITE)
-        large_text = pygame.font.SysFont("comicsansms",115)
+        large_text = pygame.font.SysFont("comicsansms",90)
         hint_message = large_text.render("Choose your color",True,COLOR_BLACK)
         hint_message_rect = hint_message.get_rect()
         hint_message_rect.center = (self.screen_width // 2, self.screen_height // 3)
