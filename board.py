@@ -1,13 +1,11 @@
 from enum import Enum
-
 import numpy as np
-
 
 class Color(Enum):
     EMPTY = 0
     BLACK = 1
-    WHITE = 2   
-    
+    WHITE = 2
+
 def check_list_len_5_and_equal(lst):
     if len(lst) > 5:
         lst.pop(0)
@@ -15,7 +13,6 @@ def check_list_len_5_and_equal(lst):
 """
 represent the game as a numpy, handing the abstract logic of the game
 """
-
 
 class Board:
 
@@ -49,7 +46,7 @@ class Board:
             self.current_player = Color.BLACK
 
     def _check_for_win(self):
-        
+
         if np.count_nonzero(self.board) == self.size*self.size:
             self.end = True
             self.winner = None
@@ -79,6 +76,3 @@ class Board:
                     self.end = True
                     # print(self.current_player)
                     self.winner = self.current_player
-
-
-

@@ -8,6 +8,7 @@ COLOR_BLACK = (0, 0, 0)
 COLOR_WHITE = (255, 255, 255)
 
 class Game:
+
     def __init__(self, width=800, height=800, edge_length=50, board = Board(7),wait_click = True,agent=None):
         self.screen_width = width
         self.screen_height = height
@@ -20,8 +21,10 @@ class Game:
         self.botton_size = (100,50)
         self.screen = None
         self.draw()
+
     def need_to_choose_color(self):
         return self.agent is not None and self.agent_color is None
+
     def draw(self):
         pygame.init()
         screen = pygame.display.set_mode(
@@ -51,6 +54,7 @@ class Game:
         botton_text_rect = botton_text.get_rect()
         botton_text_rect.center = ( x,y )
         self.screen.blit(botton_text,botton_text_rect)
+
     def draw_board(self):
         self.screen.fill(COLOR_WHITE)
         width = min(self.screen_height, self.screen_width)
@@ -61,7 +65,6 @@ class Game:
                                                    x), (width - self.screen_edge_length, x))
         pygame.display.update()
 
-    
     def wait_event(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -70,8 +73,8 @@ class Game:
                 self.choose_color_event(event)
             else:
                 self.in_game_event(event)
-            
         return True
+
     def choose_color_event(self,event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             # print(event.pos)
@@ -88,7 +91,6 @@ class Game:
             if not self.board.end:
                 if self.legal_pos(event.pos)and self.this_turn_clickable():
                     self.play_move(self.pos_to_coord(event.pos))
-
             else:
                 self.agent_color = None
                 self.board.reset()
@@ -132,6 +134,7 @@ class Game:
         text_rect.center = (self.screen_width // 2, self.screen_height // 2)
         self.screen.blit(text, text_rect)
         pygame.display.update()
+
     def run(self):
         game_continue = True
         while game_continue:
@@ -141,11 +144,12 @@ class Game:
                     self.show_result(winner=opponent(self.agent_color))
                     self.board.end = True
                 else:
-
                     self.play_move(move)
             game_continue = self.wait_event()
+
     def this_turn_clickable(self):
         return self.agent is None or (self.agent_color is not None and self.agent_color != self.board.current_player)
+
     def play_move(self,move):
         player = self.board.play_stone(move)
         self.draw_stone(self.coord_to_pos(move), player)
