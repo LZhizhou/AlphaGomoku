@@ -159,11 +159,12 @@ class AlphaGomoku:
             return 0
         score = np.size(np.where(final_array == color)[0])
 
-        data_list = [str(x) for x in list(final_array)]
-        data_str = "".join(data_list)
-        data_continue = str(color) * score
-        if data_continue in data_str:
-            score += 1
+        if score >= 4:
+            data_list = [str(x) for x in list(final_array)]
+            data_str = "".join(data_list)
+            data_continue = str(color) * score
+            if data_continue in data_str:
+                score += 1
 
         if score > 5:
             score = 5
