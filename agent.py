@@ -132,6 +132,8 @@ class AlphaGomoku:
         score_sum += attack_weight * self.sequence_score(column, move[0], color)
         score_sum += attack_weight * self.sequence_score(diagnol_left, left_index, color)
         score_sum += attack_weight * self.sequence_score(diagnol_right, right_index, color)
+        if score_sum >= 3 ** 5:
+            return 4000
         score_sum += defense_weight * self.sequence_score(row, move[1], opponent)
         score_sum += defense_weight * self.sequence_score(column, move[0], opponent)
         score_sum += defense_weight * self.sequence_score(diagnol_left, left_index, opponent)
@@ -154,8 +156,17 @@ class AlphaGomoku:
 
         if np.size(final_array) < 5:
             return 0
-        score = np.size(np.where(final_array == color)[0]) + 1
-        return (2 ** score)
+        score = np.size(np.where(final_array == color)[0])
+
+        data_list = [str(x) for x in list(final_array)]
+        data_str = "".join(data_list)
+        data_continue = str(color) * score
+        if data_continue in data_str:
+            score += 1
+
+        if score > 5:
+            score = 5
+        return (3 ** score)
 
     '''
     def get_search_move(self):
