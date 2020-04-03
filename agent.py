@@ -82,7 +82,7 @@ class AlphaGomoku:
         for move in moves:
             score = self.calculate_score(move)
             move_score.append([move, score])
-        move_score.sort(key=lambda x: x[1])
+        move_score.sort(key=lambda x: x[1], reverse=True)
         max_score = move_score[0][1]
         for move in move_score:
             if move[1] == max_score:
@@ -93,7 +93,6 @@ class AlphaGomoku:
         return None
 
     def calculate_score(self, move):
-
         board = self.board.board
         size = self.board.size
 
@@ -124,8 +123,8 @@ class AlphaGomoku:
                 diagnol_right = np.append(diagnol_right, value)
                 right_index = move[1]
 
-        attack_weight = 4
-        defense_weight = 1
+        attack_weight = 1
+        defense_weight = 2
         color = self.board.current_player.value
         opponent = 3 - color
         score_sum = 0
@@ -133,10 +132,10 @@ class AlphaGomoku:
         score_sum += attack_weight * self.sequence_score(column, move[0], color)
         score_sum += attack_weight * self.sequence_score(diagnol_left, left_index, color)
         score_sum += attack_weight * self.sequence_score(diagnol_right, right_index, color)
-        score_sum -= defense_weight * self.sequence_score(row, move[1], opponent)
-        score_sum -= defense_weight * self.sequence_score(column, move[0], opponent)
-        score_sum -= defense_weight * self.sequence_score(diagnol_left, left_index, opponent)
-        score_sum -= defense_weight * self.sequence_score(diagnol_right, right_index, opponent)
+        score_sum += defense_weight * self.sequence_score(row, move[1], opponent)
+        score_sum += defense_weight * self.sequence_score(column, move[0], opponent)
+        score_sum += defense_weight * self.sequence_score(diagnol_left, left_index, opponent)
+        score_sum += defense_weight * self.sequence_score(diagnol_right, right_index, opponent)
         return score_sum
 
     def sequence_score(self, array, index, color):
@@ -149,10 +148,13 @@ class AlphaGomoku:
                 start_index = i
             elif i > index and i < end_index:
                 end_index = i
-        final_array = array[start_index+1:end_index]
+        if start_index != 0:
+            start_index += 1
+        final_array = array[start_index:end_index]
+
         if np.size(final_array) < 5:
             return 0
-        score = np.size(np.where(final_array == color)[0])
+        score = np.size(np.where(final_array == color)[0]) + 1
         return (2 ** score)
 
     '''
