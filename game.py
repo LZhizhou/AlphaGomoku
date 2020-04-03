@@ -9,7 +9,7 @@ COLOR_WHITE = (255, 255, 255)
 
 class Game:
 
-    def __init__(self, width=800, height=800, edge_length=50, board = Board(7),wait_click = True,agent=None):
+    def __init__(self, width=800, height=800, edge_length=50, board = Board(12), wait_click = True, agent=None):
         self.screen_width = width
         self.screen_height = height
         self.screen_edge_length = edge_length
@@ -160,7 +160,7 @@ def opponent(color):
     return Color.WHITE.value + Color.BLACK.value - color
 
 if __name__ == '__main__':
-    board = Board(7)
+    board = Board(12)
     agent = AlphaGomoku(board = board)
     game = Game(board=board,wait_click=True,agent=agent)
     game.run()
