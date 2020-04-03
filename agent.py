@@ -141,7 +141,7 @@ class AlphaGomoku:
         return score_sum
 
     def sequence_score(self, array, index, color):
-        array[index] = color
+        # array[index] = color
         opponent = 3 - color
         start_index = 0
         end_index = np.size(array)
@@ -162,8 +162,8 @@ class AlphaGomoku:
         data_list = [str(x) for x in list(final_array)]
         data_str = "".join(data_list)
         data_continue = str(color) * score
-        if data_continue not in data_str:
-            score -= 1
+        if data_continue in data_str:
+            score += 1
 
         if score > 5:
             score = 5
