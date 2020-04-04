@@ -165,8 +165,13 @@ class AlphaGomoku:
         data_continue = str(color) * score
         if data_continue not in data_str:
             score -= 1
+
+        if final_array[0] == color or final_array[-1] == color:
+            score -= 1
+
         if score > 5:
             score = 5
+
         return (3 ** score)
 
     '''
