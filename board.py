@@ -50,29 +50,36 @@ class Board:
         if np.count_nonzero(self.board) == self.size*self.size:
             self.end = True
             self.winner = None
-        for row in range(self.size):
+        transpose_board = np.transpose(self.board)
+        # print('======================')
+        ascending_diag = [self.board[::-1,:].diagonal(i) for i in range(-self.size+1, self.size)]
+        # print(len(ascending_diag))
+        # print(ascending_diag)
+        descending_diag =[self.board.diagonal(i) for i in range(self.size-1, -self.size,-1)]
+        # print(len(descending_diag))
+        # print(descending_diag)
+
+
+        for row in range(2*self.size-1):
             horizontal_seq = []
             vertical_seq = []
             ascending_seq = []
             descending_seq = []
-            symmetric_ascending_seq = []
-            symmetric_descending_seq = []
+
 
             for col in range(self.size):
-                horizontal_seq.append(self.board[row][col])
-                vertical_seq.append(self.board[col][row])
-                if row >= col:
-                    ascending_seq.append(self.board[row - col][col])
-                    symmetric_ascending_seq.append(self.board[col][row - col])
-                if row + col < self.size:
-                    descending_seq.append(self.board[row + col][col])
-                    symmetric_descending_seq.append(self.board[col][row + col])
+                if row< self.size:
+                    horizontal_seq.append(self.board[row][col])
+                    vertical_seq.append(transpose_board[row][col])
+                if col < len(ascending_diag[row]):
+                    ascending_seq.append(ascending_diag[row][col])
+                if col < len(descending_diag[row]):
+                    descending_seq.append(descending_diag[row][col])
+
 
                 if check_list_len_5_and_equal(horizontal_seq) or check_list_len_5_and_equal(vertical_seq) \
                         or check_list_len_5_and_equal(ascending_seq) \
-                        or check_list_len_5_and_equal(descending_seq) \
-                        or check_list_len_5_and_equal(symmetric_ascending_seq) \
-                        or check_list_len_5_and_equal(symmetric_descending_seq):
+                        or check_list_len_5_and_equal(descending_seq):
                     self.end = True
                     # print(self.current_player)
                     self.winner = self.current_player

@@ -160,7 +160,7 @@ def opponent(color):
     return Color.WHITE.value + Color.BLACK.value - color
 
 if __name__ == '__main__':
-    board = Board(12)
+    board = Board(11)
     agent = AlphaGomoku(board = board)
     game = Game(board=board,wait_click=True,agent=agent)
     game.run()
