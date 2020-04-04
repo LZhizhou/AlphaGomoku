@@ -140,8 +140,9 @@ class AlphaGomoku:
         score_sum += defense_weight * self.sequence_score(diagnol_right, right_index, opponent)
         return score_sum
 
-    def sequence_score(self, array, index, color):
-        # array[index] = color
+    def sequence_score(self, ori_array, index, color):
+        array = ori_array.copy()
+        array[index] = color
         opponent = 3 - color
         start_index = 0
         end_index = np.size(array)
@@ -159,13 +160,11 @@ class AlphaGomoku:
             return 0
         score = np.size(np.where(final_array == color)[0])
 
-        if score >= 4:
-            data_list = [str(x) for x in list(final_array)]
-            data_str = "".join(data_list)
-            data_continue = str(color) * score
-            if data_continue in data_str:
-                score += 1
-
+        data_list = [str(x) for x in list(final_array)]
+        data_str = "".join(data_list)
+        data_continue = str(color) * score
+        if data_continue not in data_str:
+            score -= 1
         if score > 5:
             score = 5
         return (3 ** score)
